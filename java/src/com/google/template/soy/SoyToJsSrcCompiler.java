@@ -22,6 +22,7 @@ import com.google.inject.Injector;
 import com.google.template.soy.base.SoySyntaxException;
 import com.google.template.soy.jssrc.SoyJsSrcOptions;
 import com.google.template.soy.jssrc.SoyJsSrcOptions.CodeStyle;
+import com.google.template.soy.pomsgplugin.PoMsgPluginModule;
 import com.google.template.soy.shared.SoyGeneralOptions.CssHandlingScheme;
 import com.google.template.soy.xliffmsgplugin.XliffMsgPluginModule;
 
@@ -203,7 +204,7 @@ public final class SoyToJsSrcCompiler {
                   " If not specified, the default is" +
                   " com.google.template.soy.xliffmsgplugin.XliffMsgPluginModule, which binds" +
                   " the XliffMsgPlugin.")
-  private String messagePluginModule = XliffMsgPluginModule.class.getName();
+  private String messagePluginModule = PoMsgPluginModule.class.getName();
 
   @Option(name = "--pluginModules",
           usage = "Specifies the full class names of Guice modules for function plugins and" +

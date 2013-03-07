@@ -25,6 +25,7 @@ import com.google.template.soy.msgs.SoyMsgBundle;
 import com.google.template.soy.msgs.SoyMsgBundleHandler;
 import com.google.template.soy.msgs.SoyMsgBundleHandler.OutputFileOptions;
 import com.google.template.soy.xliffmsgplugin.XliffMsgPluginModule;
+import com.google.template.soy.pomsgplugin.PoMsgPluginModule;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineParser;
@@ -102,7 +103,7 @@ public final class SoyMsgExtractor {
                   " If not specified, the default is" +
                   " com.google.template.soy.xliffmsgplugin.XliffMsgPluginModule, which binds" +
                   " the XliffMsgPlugin.")
-  private String messagePluginModule = XliffMsgPluginModule.class.getName();
+  private String messagePluginModule = PoMsgPluginModule.class.getName();
 
   /** The remaining arguments after parsing command-line flags. */
   @Argument
