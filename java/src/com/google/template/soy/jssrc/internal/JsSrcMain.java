@@ -154,7 +154,7 @@ public class JsSrcMain {
             bidiGlobalDir == null || bidiGlobalDir.isStaticValue(),
             "If using bidiGlobalIsRtlCodeSnippet, must also enable shouldGenerateGoogMsgDefs.");
         try {
-          (new InsertMsgsVisitor(msgBundle, true)).exec(soyTree);
+          (new InsertMsgsVisitor(msgBundle, false)).exec(soyTree);
         } catch (EncounteredPlrselMsgException e) {
           throw SoySyntaxExceptionUtils.createWithNode(
               "JS code generation currently only supports plural/select messages when" +

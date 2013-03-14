@@ -80,8 +80,14 @@ public class PoGenerator {
 
       boolean useSingular = true;
 
+      boolean pluralBegun = false;
+
       for (SoyMsgPart msgPart : msg.getParts()) {
         if (msgPart instanceof SoyMsgPluralPart) {
+          if (!pluralBegun) {
+            ilb.appendLine("#: pluralVar=" + ((SoyMsgPluralPart)msgPart).getPluralVarName());
+            pluralBegun = true;
+          }
           pluralMessage((SoyMsgPluralPart) msgPart, ilb);
           useSingular = false;
           break;
