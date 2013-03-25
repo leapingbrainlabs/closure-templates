@@ -112,7 +112,7 @@ public class PoGenerator {
 
   static String message(SoyMsgPart msgPart) {
     if (msgPart instanceof SoyMsgRawTextPart) {
-      return ((SoyMsgRawTextPart) msgPart).getRawText();
+      return escapeString(((SoyMsgRawTextPart) msgPart).getRawText());
     } else if (msgPart instanceof SoyMsgPluralPart) {
       throw new PoException("PO generation does not support embedded {plural}.");
     } else if (msgPart instanceof SoyMsgSelectPart) {
@@ -121,6 +121,10 @@ public class PoGenerator {
       String placeholderName = ((SoyMsgPlaceholderPart) msgPart).getPlaceholderName();
       return "{$".concat(placeholderName).concat("}");
     }
+  }
+
+  static String escapeString(String s) {
+    return s.replace("\"", "\\\"").replace("\n","\\n\"\n\"");
   }
 
   static void pluralMessage(SoyMsgPluralPart msgPart, IndentedLinesBuilder ilb) throws PoException {
