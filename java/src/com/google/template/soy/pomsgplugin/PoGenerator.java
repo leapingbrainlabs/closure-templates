@@ -61,11 +61,6 @@ public class PoGenerator {
 
     for (SoyMsg msg : msgBundle) {
 
-      // Description and meaning.
-      String desc = msg.getDesc();
-      if (desc != null && desc.length() > 0) {
-        ilb.appendLine("# Description: ", desc);
-      }
       String meaning = msg.getMeaning();
       if (meaning != null && meaning.length() > 0) {
         ilb.appendLine("# Meaning: ", meaning);
@@ -74,6 +69,12 @@ public class PoGenerator {
       // Begin message
       ilb.appendLine("#: id=".concat(Long.toString(msg.getId())));
       ilb.appendLine("#: type=".concat(msg.getContentType()));
+
+      // Description and meaning.
+      String desc = msg.getDesc();
+      if (desc != null && desc.length() > 0) {
+        ilb.appendLine("msgctxt \"", desc, "\"");
+      }
 
       StringBuilder singular = new StringBuilder();
       singular.append("msgid \"");
@@ -102,6 +103,7 @@ public class PoGenerator {
       } else if (!singular.toString().equalsIgnoreCase("msgid \"")) {
         throw new PoException("No message content is allowed before or after a plural block. Found: ".concat(singular.toString().substring(6)));
       }
+      ilb.appendLine("msgstr \"\"");
       ilb.appendLineEnd();
 
     }
