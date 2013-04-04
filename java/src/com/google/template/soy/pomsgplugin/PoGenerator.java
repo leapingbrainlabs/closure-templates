@@ -70,26 +70,17 @@ public class PoGenerator {
       ilb.appendLine("#: id=".concat(Long.toString(msg.getId())));
       ilb.appendLine("#: type=".concat(msg.getContentType()));
 
-      // Description and meaning.
-      String desc = msg.getDesc();
-      if (desc != null && desc.length() > 0) {
-        ilb.appendLine("msgctxt \"", desc, "\"");
-      }
-
       StringBuilder singular = new StringBuilder();
       singular.append("msgid \"");
 
-      boolean useSingular = true;
+      StringBuilder plural = new StringBuilder();
 
-      boolean pluralBegun = false;
+      boolean useSingular = true;
 
       for (SoyMsgPart msgPart : msg.getParts()) {
         if (msgPart instanceof SoyMsgPluralPart) {
-          if (!pluralBegun) {
-            ilb.appendLine("#: pluralVar=" + ((SoyMsgPluralPart)msgPart).getPluralVarName());
-            pluralBegun = true;
-          }
-          pluralMessage((SoyMsgPluralPart) msgPart, ilb);
+          ilb.appendLine("#: pluralVar=" + ((SoyMsgPluralPart)msgPart).getPluralVarName());
+          pluralMessage((SoyMsgPluralPart) msgPart, plural);
           useSingular = false;
           break;
         } else {
@@ -97,12 +88,21 @@ public class PoGenerator {
         }
       }
 
+      // Description and meaning.
+      String desc = msg.getDesc();
+      if (desc != null && desc.length() > 0) {
+        ilb.appendLine("msgctxt \"", desc, "\"");
+      }
+
       if (useSingular) {
         ilb.append(singular.toString());
         ilb.appendLineEnd("\"");
       } else if (!singular.toString().equalsIgnoreCase("msgid \"")) {
         throw new PoException("No message content is allowed before or after a plural block. Found: ".concat(singular.toString().substring(6)));
+      } else {
+        ilb.append(plural.toString());
       }
+
       ilb.appendLine("msgstr \"\"");
       ilb.appendLineEnd();
 
@@ -129,7 +129,7 @@ public class PoGenerator {
     return s.replace("\"", "\\\"").replace("\n","\\n\"\n\"");
   }
 
-  static void pluralMessage(SoyMsgPluralPart msgPart, IndentedLinesBuilder ilb) throws PoException {
+  static void pluralMessage(SoyMsgPluralPart msgPart, StringBuilder sb) throws PoException {
     for ( Pair<SoyMsgPluralCaseSpec, List<SoyMsgPart>> pluralPart : ((SoyMsgPluralPart) msgPart).getCases()) {
 
       StringBuilder currentMessage = new StringBuilder();
@@ -150,7 +150,7 @@ public class PoGenerator {
         throw new PoException("PO only supports singular and plural variants, {case 1} and {default}, respectively.");
       }
 
-      ilb.appendLineEnd(currentMessage.toString());
+      sb.append(currentMessage.toString()).append("\n");
     }
   }
 
