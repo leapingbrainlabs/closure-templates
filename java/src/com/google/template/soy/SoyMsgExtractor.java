@@ -102,8 +102,9 @@ public final class SoyMsgExtractor {
           usage = "Specifies the full class name of a Guice module that binds a SoyMsgPlugin." +
                   " If not specified, the default is" +
                   " com.google.template.soy.xliffmsgplugin.XliffMsgPluginModule, which binds" +
-                  " the XliffMsgPlugin.")
-  private String messagePluginModule = PoMsgPluginModule.class.getName();
+                  " the XliffMsgPlugin. Options:" +
+                  " com.google.template.soy.pomsgplugin.PoMsgPluginModule")
+  private String messagePluginModule = XliffMsgPluginModule.class.getName();
 
   /** The remaining arguments after parsing command-line flags. */
   @Argument
