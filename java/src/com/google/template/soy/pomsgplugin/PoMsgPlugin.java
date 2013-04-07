@@ -33,7 +33,7 @@ public class PoMsgPlugin implements SoyMsgPlugin {
 
 
   @Override public SoyMsgBundle parseTranslatedMsgsFile(String inputFileContent)
-      throws PoException, SoyMsgException {
+      throws SoyMsgException {
 
     try {
       return PoParser.parsePoTargetMsgs(inputFileContent);
